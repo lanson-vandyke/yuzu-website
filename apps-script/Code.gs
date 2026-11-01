@@ -12,7 +12,7 @@
  * and must match ENQUIRY_WEBHOOK_SECRET in Cloudflare.
  */
 const SHEET_ID = "1XU2XDgOP14LN7KElOIw8ouOQUXkDrNEly5rBLis_3_M"; // "Yuzu Website Enquiries"
-const NOTIFY_TO = "lanson@yuzutalent.com"; // switch to hello@yuzutalent.com once that Group exists
+const NOTIFY_TO = "hello@yuzutalent.com"; // Group: everyone in it gets each enquiry
 const SHEET_NAME = "Enquiries";
 const HEADERS = ["Received", "Type", "Name", "Email", "Handle", "Company", "Budget", "Message", "Status", "Owner", "Country", "Site", "ID"];
 

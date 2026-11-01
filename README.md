@@ -6,7 +6,7 @@ The live Yuzu Talent Agency website: Concept 10, "Good Trouble", from `yuzu-conc
 
 - **Hosting:** Cloudflare Pages (free plan), connected to this GitHub repo. Every push to `main` deploys.
 - **Site:** static files in `public/`. No build step.
-- **Enquiry form:** `public/js/yuzu-api.js` POSTs to `/api/enquiries`, a Pages Function in `functions/api/enquiries.js`. It validates the enquiry and forwards it to a Google Apps Script web app (`apps-script/Code.gs`). The script adds a row to the "Website Enquiries" Sheet in lanson@yuzutalent.com's Drive and emails the team.
+- **Enquiry form:** `public/js/yuzu-api.js` POSTs to `/api/enquiries`, a Pages Function in `functions/api/enquiries.js`. It validates the enquiry and forwards it to a Google Apps Script web app (`apps-script/Code.gs`). The script adds a row to the "Website Enquiries" Sheet in lanson@yuzutalent.com's Drive and emails hello@yuzutalent.com (a Google Group).
 
 ## Cloudflare Pages settings
 
