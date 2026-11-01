@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yuzu Talent Agency · Real people. Bigger moves.</title>
+  <meta name="description" content="Yuzu Talent Agency does two things: creator management and brand management. Real people. Bigger moves.">
+  <meta name="theme-color" content="#F7F5EF">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..900,0..100;1,9..144,400..900,0..100&family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%23F4E8B2' stroke='%23123D32' stroke-width='4'/%3E%3Cpath d='M32 32 32 9M32 32 52 44M32 32 12 44' stroke='%23F15A45' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- Shared SVG defs: halftone dot patterns + a rough-cut paper filter -->
+  <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <pattern id="dots-forest" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+        <circle cx="3" cy="3" r="1.25" fill="#123D32"/>
+      </pattern>
+      <pattern id="dots-tomato" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+        <circle cx="3" cy="3" r="1.4" fill="#F15A45"/>
+      </pattern>
+      <pattern id="dots-cobalt" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+        <circle cx="2.5" cy="2.5" r="1.1" fill="#315BFF"/>
+      </pattern>
+      <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ================= NAV ================= -->
+  <header class="nav" id="top">
+    <div class="nav__inner wrap">
+      <a class="brand" href="#main" aria-label="Yuzu Talent Agency, back to top">
+        <span class="mark mark--nav" data-mark="loop"></span>
+        <span class="brand__text">
+          <span class="brand__name">Yuzu</span>
+          <span class="brand__sub">Talent Agency</span>
+        </span>
+      </a>
+      <p class="nav__desc">Creator management <span aria-hidden="true">·</span> Brand management</p>
+
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+        <span class="nav__toggle-bars" aria-hidden="true"></span>
+        <span class="nav__toggle-label">Menu</span>
+      </button>
+
+      <nav class="nav__menu" id="nav-menu" aria-label="Primary">
+        <ul class="nav__links">
+          <li><a href="#what">What we do</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#niches">Niches</a></li>
+        </ul>
+        <a class="btn btn--sticker" href="#hello">Say hi <svg class="wave" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12 q3 -6 6 0 t6 0"/></svg></a>
+      </nav>
+    </div>
+    <div class="rip rip--under" data-rip="bottom" aria-hidden="true"></div>
+  </header>
+
+  <main id="main" tabindex="-1">
+
+    <!-- ================= HERO ================= -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__inner wrap">
+        <div class="hero__copy">
+          <p class="tape tape--label">Creator management <span aria-hidden="true">·</span> Brand management</p>
+
+          <h1 class="hero__title" id="hero-title">
+            <span class="ransom ransom--xl" data-ransom>Real people.</span>
+            <span class="hero__soft">Bigger moves<span class="hero__dot">.</span>
+              <svg class="scrawl" viewBox="0 0 320 30" preserveAspectRatio="none" aria-hidden="true"><path d="M4 20 C 50 8, 96 26, 150 14 S 250 4, 316 18"/><path d="M30 26 C 110 18, 210 28, 290 22"/></svg>
+            </span>
+          </h1>
+
+          <p class="hero__lede">We help creators land brand deals worth doing, and help brands work with creators without the headache.</p>
+
+          <div class="hero__ctas">
+            <a class="btn btn--forest" href="#hello" data-type="creator">I'm a creator <span aria-hidden="true">→</span></a>
+            <a class="btn btn--paper" href="#hello" data-type="brand">I'm a brand <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+
+        <div class="collage" aria-label="A collage of paper cut-outs and stickers. The stickers can be peeled." role="group">
+          <!-- halftone yuzu on torn butter paper -->
+          <div class="collage__sheet-wrap" aria-hidden="true">
+            <div class="collage__sheet" data-tear="all" data-amp="7">
+              <canvas class="halftone" data-halftone></canvas>
+            </div>
+            <span class="tape tape--strip tape--tl"></span>
+            <span class="tape tape--strip tape--br"></span>
+          </div>
+
+          <!-- growth-ring rubber stamp -->
+          <svg class="stamp" viewBox="0 0 200 200" aria-hidden="true" data-stamp>
+            <defs><path id="stamp-path" d="M100 100 m-74 0 a74 74 0 1 1 148 0 a74 74 0 1 1 -148 0"/></defs>
+            <g class="stamp__rings"></g>
+            <text class="stamp__text"><textPath href="#stamp-path" textLength="460" lengthAdjust="spacing">real people ✶ bigger moves ✶ real people ✶ bigger moves ✶</textPath></text>
+          </svg>
+
+          <!-- handwritten note -->
+          <div class="note-wrap" aria-hidden="true">
+            <div class="note" data-tear="tb" data-amp="5">
+              <p>you make the good stuff.<br>we'll handle the boring bits.</p>
+            </div>
+            <span class="tape tape--strip tape--note"></span>
+          </div>
+
+          <!-- doodles -->
+          <svg class="doodle doodle--arrow" viewBox="0 0 120 80" aria-hidden="true"><path d="M8 70 C 30 66, 60 54, 76 28 M76 28 L62 32 M76 28 L80 42"/></svg>
+          <svg class="doodle doodle--star" viewBox="0 0 60 60" aria-hidden="true"><path d="M30 6 L35 25 L54 30 L35 35 L30 54 L25 35 L6 30 L25 25 Z"/></svg>
+          <svg class="doodle doodle--squiggle" viewBox="0 0 120 30" aria-hidden="true"><path d="M4 15 q 10 -14 20 0 t 20 0 t 20 0 t 20 0 t 20 0"/></svg>
+
+          <!-- peelable stickers -->
+          <button class="peel peel--circle" type="button" data-peel="nice peel." aria-pressed="false">
+            <span class="peel__under" aria-hidden="true"><span>nice peel.</span></span>
+            <span class="peel__face" aria-hidden="true"><span>no<br>jargon!</span></span>
+            <span class="sr-only peel__label">Peel the "no jargon" sticker</span>
+          </button>
+          <button class="peel peel--burst" type="button" data-peel="hi back :)" aria-pressed="false">
+            <span class="peel__under" aria-hidden="true"><span>hi back :)</span></span>
+            <span class="peel__face" aria-hidden="true"><span>hi!</span></span>
+            <span class="sr-only peel__label">Peel the "hi" sticker</span>
+          </button>
+          <button class="peel peel--label" type="button" data-peel="every word." aria-pressed="false">
+            <span class="peel__under" aria-hidden="true"><span>every word.</span></span>
+            <span class="peel__face" aria-hidden="true"><span>we read the small print</span></span>
+            <span class="sr-only peel__label">Peel the "we read the small print" sticker</span>
+          </button>
+
+          <p class="collage__hint" aria-hidden="true">psst. the stickers peel</p>
+          <p class="collage__found" aria-hidden="true"></p>
+          <p class="sr-only" role="status" data-peel-status></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WHAT WE DO ================= -->
+    <section class="what" id="what" aria-labelledby="what-title">
+      <svg class="rings-bg" viewBox="0 0 600 600" aria-hidden="true" data-rings></svg>
+      <div class="wrap">
+        <header class="head reveal">
+          <p class="tape tape--kicker">What we do</p>
+          <h2 class="h2" id="what-title">We do <span class="ransom" data-ransom>two</span> things. Properly.</h2>
+        </header>
+
+        <div class="offers">
+          <article class="offer offer--creator reveal" aria-labelledby="offer-creator">
+            <div class="offer__paper" data-tear="all" data-amp="6">
+              <p class="offer__tag">For creators</p>
+              <h3 class="offer__title" id="offer-creator">Creator management</h3>
+              <p class="offer__lede">You make the stuff. We do the business bit.</p>
+              <ul class="checks">
+                <li>We pitch you to brands you'd actually use</li>
+                <li>We negotiate your rates, so you don't undersell yourself</li>
+                <li>We read every contract before you sign</li>
+                <li>We handle invoices, chasing and admin</li>
+              </ul>
+              <a class="btn btn--forest" href="#hello" data-type="creator">Talk to us about deals <span aria-hidden="true">→</span></a>
+            </div>
+            <span class="tape tape--strip tape--tomato tape--a" aria-hidden="true"></span>
+            <svg class="offer__doodle" viewBox="0 0 80 80" aria-hidden="true"><path d="M40 8 L46 32 L72 40 L46 48 L40 72 L34 48 L8 40 L34 32 Z"/></svg>
+          </article>
+
+          <article class="offer offer--brand reveal" aria-labelledby="offer-brand">
+            <div class="offer__paper" data-tear="all" data-amp="6">
+              <p class="offer__tag">For brands</p>
+              <h3 class="offer__title" id="offer-brand">Brand management</h3>
+              <p class="offer__lede">You want creators who get it. We find them and keep it smooth.</p>
+              <ul class="checks">
+                <li>We match you with creators who fit</li>
+                <li>We agree briefs, rates and deliverables upfront</li>
+                <li>We keep contracts clean and simple</li>
+                <li>You get one point of contact, start to finish</li>
+              </ul>
+              <a class="btn btn--forest" href="#hello" data-type="brand">Talk to us about creators <span aria-hidden="true">→</span></a>
+            </div>
+            <span class="tape tape--strip tape--cobalt tape--b" aria-hidden="true"></span>
+            <svg class="offer__doodle offer__doodle--loop" viewBox="0 0 100 60" aria-hidden="true"><path d="M6 40 C 20 6, 44 6, 40 30 C 36 52, 64 54, 94 20"/></svg>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HOW IT WORKS ================= -->
+    <section class="how" id="how" aria-labelledby="how-title">
+      <div class="rip rip--top" data-rip="top" aria-hidden="true"></div>
+      <div class="wrap">
+        <header class="head head--light reveal">
+          <p class="tape tape--kicker tape--butter">How it works</p>
+          <h2 class="h2" id="how-title">Three steps. No <span class="ransom" data-ransom>fuss</span>.</h2>
+        </header>
+
+        <ol class="steps">
+          <li class="step reveal">
+            <div class="step__paper" data-tear="all" data-amp="5">
+              <span class="step__num" aria-hidden="true">1</span>
+              <h3>Say hi</h3>
+              <p>Tell us who you are and what you're after. Takes about two minutes.</p>
+            </div>
+            <span class="pin" aria-hidden="true"></span>
+          </li>
+          <li class="step reveal">
+            <div class="step__paper" data-tear="all" data-amp="5">
+              <span class="step__num" aria-hidden="true">2</span>
+              <h3>We have a chat</h3>
+              <p>A real conversation about what you need. No pitch deck, no pressure.</p>
+            </div>
+            <span class="pin pin--cobalt" aria-hidden="true"></span>
+          </li>
+          <li class="step reveal">
+            <div class="step__paper" data-tear="all" data-amp="5">
+              <span class="step__num" aria-hidden="true">3</span>
+              <h3>We get to work</h3>
+              <p>Deals, contracts, admin. You get back to the fun part.</p>
+            </div>
+            <span class="pin pin--butter" aria-hidden="true"></span>
+          </li>
+        </ol>
+        <svg class="how__path" viewBox="0 0 1000 80" preserveAspectRatio="none" aria-hidden="true"><path d="M60 50 C 200 0, 300 90, 500 40 S 800 0, 940 46"/></svg>
+      </div>
+      <div class="rip rip--bottom" data-rip="bottom" aria-hidden="true"></div>
+    </section>
+
+    <!-- ================= NICHES ================= -->
+    <section class="niches" id="niches" aria-labelledby="niches-title">
+      <div class="wrap">
+        <header class="head reveal">
+          <p class="tape tape--kicker">Niches we love</p>
+          <h2 class="h2" id="niches-title">Our favourite <span class="ransom" data-ransom>corners</span> of the internet.</h2>
+          <p class="head__sub" id="drag-hint">Psst: the cards move. Drag them by the pin, or focus one and use your arrow keys.</p>
+        </header>
+
+        <ul class="board" data-board>
+          <li class="tile tile--butter" tabindex="0" aria-roledescription="movable card" aria-describedby="drag-hint" aria-labelledby="n-budget">
+            <span class="pin tile__pin" aria-hidden="true"></span>
+            <div class="tile__paper" data-tear="all" data-amp="5">
+              <svg class="tile__art" viewBox="0 0 200 150" aria-hidden="true">
+                <g filter="url(#rough)" stroke="#123D32" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+                  <path d="M80 18 v-8 M70 22 l-5 -6 M90 22 l5 -6" fill="none"/>
+                  <circle cx="80" cy="36" r="11" fill="#F4E8B2"/>
+                  <path d="M76 36 h8" fill="none"/>
+                  <path d="M58 64 L66 44 L80 60 Z" fill="#F15A45"/>
+                  <path d="M30 88 c-12 -6 -14 10 -4 10 c8 0 6 -12 -4 -14" fill="none"/>
+                  <rect x="52" y="112" width="14" height="22" rx="4" fill="#F15A45"/>
+                  <rect x="96" y="112" width="14" height="22" rx="4" fill="#F15A45"/>
+                  <ellipse cx="82" cy="90" rx="52" ry="36" fill="#F15A45"/>
+                  <ellipse cx="82" cy="90" rx="52" ry="36" fill="url(#dots-forest)" stroke="none" opacity=".35"/>
+                  <ellipse cx="134" cy="88" rx="10" ry="13" fill="#F7F5EF"/>
+                  <rect x="70" y="56" width="24" height="6" rx="3" fill="#123D32"/>
+                  <circle cx="112" cy="76" r="3.5" fill="#123D32" stroke="none"/>
+                  <circle cx="133" cy="84" r="2" fill="#123D32" stroke="none"/>
+                  <circle cx="133" cy="93" r="2" fill="#123D32" stroke="none"/>
+                  <rect x="152" y="118" width="38" height="12" rx="6" fill="#F4E8B2"/>
+                  <rect x="155" y="106" width="38" height="12" rx="6" fill="#F4E8B2"/>
+                  <rect x="150" y="94" width="38" height="12" rx="6" fill="#F4E8B2"/>
+                  <path d="M176 64 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3 Z" fill="#315BFF"/>
+                </g>
+              </svg>
+              <h3 class="tile__title" id="n-budget"><span>Budgeting</span></h3>
+              <p>Money-savvy creators who make saving feel good.</p>
+            </div>
+          </li>
+
+          <li class="tile tile--sky" tabindex="0" aria-roledescription="movable card" aria-describedby="drag-hint" aria-labelledby="n-travel">
+            <span class="pin pin--cobalt tile__pin" aria-hidden="true"></span>
+            <div class="tile__paper" data-tear="all" data-amp="5">
+              <svg class="tile__art" viewBox="0 0 200 150" aria-hidden="true">
+                <g filter="url(#rough)" stroke="#123D32" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+                  <g transform="rotate(-6 90 96)">
+                    <rect x="24" y="58" width="132" height="80" rx="4" fill="#F7F5EF"/>
+                    <path d="M90 66 v64" fill="none"/>
+                    <circle cx="50" cy="84" r="12" fill="#F4E8B2"/>
+                    <path d="M32 120 q 10 -14 20 0 t 20 0 t 16 -2" fill="none"/>
+                    <rect x="124" y="66" width="24" height="28" rx="2" fill="#F15A45"/>
+                    <rect x="124" y="66" width="24" height="28" rx="2" fill="url(#dots-forest)" stroke="none" opacity=".35"/>
+                    <path d="M100 104 h46 M100 116 h40 M100 128 h30" fill="none" stroke-width="2.5"/>
+                  </g>
+                  <path d="M16 40 C 50 8, 90 52, 124 30" fill="none" stroke-dasharray="3 9"/>
+                  <path d="M132 32 L192 10 L158 54 L150 40 Z" fill="#315BFF"/>
+                  <path d="M192 10 L150 40 L146 52" fill="none"/>
+                </g>
+              </svg>
+              <h3 class="tile__title" id="n-travel"><span>Travel</span></h3>
+              <p>Explorers and weekenders who make you want to pack a bag.</p>
+            </div>
+          </li>
+
+          <li class="tile tile--sage" tabindex="0" aria-roledescription="movable card" aria-describedby="drag-hint" aria-labelledby="n-life">
+            <span class="pin pin--butter tile__pin" aria-hidden="true"></span>
+            <div class="tile__paper" data-tear="all" data-amp="5">
+              <svg class="tile__art" viewBox="0 0 200 150" aria-hidden="true">
+                <g filter="url(#rough)" stroke="#123D32" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+                  <path d="M56 40 c-8 -8 8 -12 0 -24 M74 40 c-8 -8 8 -12 0 -24 M92 40 c-8 -8 8 -12 0 -24" fill="none"/>
+                  <ellipse cx="74" cy="134" rx="54" ry="8" fill="#F4E8B2"/>
+                  <path d="M114 70 c22 0 22 34 0 34" fill="none" stroke-width="7"/>
+                  <path d="M114 70 c22 0 22 34 0 34" fill="none" stroke="#F7F5EF" stroke-width="2"/>
+                  <path d="M34 52 h80 v54 a22 22 0 0 1 -22 22 h-36 a22 22 0 0 1 -22 -22 z" fill="#F7F5EF"/>
+                  <rect x="34" y="68" width="80" height="16" fill="#F15A45"/>
+                  <rect x="34" y="68" width="80" height="16" fill="url(#dots-forest)" stroke="none" opacity=".3"/>
+                  <path d="M160 100 v-38" fill="none"/>
+                  <path d="M160 82 c-22 -2 -30 -18 -28 -30 c14 0 28 10 28 30 Z" fill="#2E6B58"/>
+                  <path d="M160 70 c18 -6 22 -22 20 -34 c-14 2 -22 16 -20 34 Z" fill="#2E6B58"/>
+                  <path d="M160 82 c-22 -2 -30 -18 -28 -30 c14 0 28 10 28 30 Z" fill="url(#dots-forest)" stroke="none" opacity=".4"/>
+                  <path d="M138 100 h44 l-6 34 h-32 z" fill="#F15A45"/>
+                  <path d="M136 100 h48" fill="none"/>
+                </g>
+              </svg>
+              <h3 class="tile__title" id="n-life"><span>Lifestyle</span></h3>
+              <p>Everyday creators with good taste and routines that feel real.</p>
+            </div>
+          </li>
+
+          <li class="tile tile--bone" tabindex="0" aria-roledescription="movable card" aria-describedby="drag-hint" aria-labelledby="n-sport">
+            <span class="pin tile__pin" aria-hidden="true"></span>
+            <div class="tile__paper" data-tear="all" data-amp="5">
+              <svg class="tile__art" viewBox="0 0 200 150" aria-hidden="true">
+                <g filter="url(#rough)" stroke="#123D32" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+                  <path d="M10 54 h26 M4 72 h30 M14 90 h22" fill="none"/>
+                  <ellipse cx="88" cy="138" rx="34" ry="6" fill="#123D32" stroke="none" opacity=".18"/>
+                  <circle cx="88" cy="74" r="44" fill="#F15A45"/>
+                  <circle cx="88" cy="74" r="44" fill="url(#dots-forest)" stroke="none" opacity=".3"/>
+                  <path d="M88 30 v88 M44 74 h88" fill="none"/>
+                  <path d="M58 42 c18 18 18 46 0 64 M118 42 c-18 18 -18 46 0 64" fill="none"/>
+                  <path d="M156 136 v-110" fill="none"/>
+                  <path d="M156 28 l38 14 l-38 14 z" fill="#315BFF"/>
+                  <path d="M156 28 l38 14 l-38 14 z" fill="url(#dots-forest)" stroke="none" opacity=".25"/>
+                </g>
+              </svg>
+              <h3 class="tile__title" id="n-sport"><span>Sports</span></h3>
+              <p>Athletes, coaches and superfans who keep it moving.</p>
+            </div>
+          </li>
+
+          <li class="tile tile--blush" tabindex="0" aria-roledescription="movable card" aria-describedby="drag-hint" aria-labelledby="n-beauty">
+            <span class="pin pin--cobalt tile__pin" aria-hidden="true"></span>
+            <div class="tile__paper" data-tear="all" data-amp="5">
+              <svg class="tile__art" viewBox="0 0 200 150" aria-hidden="true">
+                <g filter="url(#rough)" stroke="#123D32" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+                  <path d="M58 66 v-30 l22 -12 v42 z" fill="#F15A45"/>
+                  <rect x="54" y="64" width="30" height="20" rx="2" fill="#F4E8B2"/>
+                  <rect x="50" y="82" width="38" height="56" rx="4" fill="#123D32"/>
+                  <rect x="50" y="82" width="38" height="56" rx="4" fill="url(#dots-tomato)" stroke="none" opacity=".35"/>
+                  <circle cx="142" cy="102" r="36" fill="#F4E8B2"/>
+                  <circle cx="142" cy="102" r="26" fill="#E1E7FF"/>
+                  <circle cx="142" cy="102" r="26" fill="url(#dots-cobalt)" stroke="none" opacity=".35"/>
+                  <path d="M128 92 l10 -10 M132 104 l18 -18" fill="none" stroke="#F7F5EF" stroke-width="3.5"/>
+                  <path d="M150 30 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3 Z M184 54 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2 Z" fill="#315BFF"/>
+                </g>
+              </svg>
+              <h3 class="tile__title" id="n-beauty"><span>Beauty</span></h3>
+              <p>Honest testers and makeup tinkerers people actually listen to.</p>
+            </div>
+          </li>
+
+          <li class="tile tile--invite" tabindex="0" aria-roledescription="movable card" aria-describedby="drag-hint" aria-labelledby="n-other">
+            <span class="pin pin--butter tile__pin" aria-hidden="true"></span>
+            <div class="tile__paper tile__paper--invite">
+              <h3 class="tile__title tile__title--hand" id="n-other">Not on the board?</h3>
+              <p>Say hi anyway. We love a surprise.</p>
+              <a class="link-hand" href="#hello">say hi <span aria-hidden="true">→</span></a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= SAY HI ================= -->
+    <section class="hello" id="hello" aria-labelledby="hello-title">
+      <div class="wrap hello__inner">
+        <header class="hello__head reveal">
+          <p class="tape tape--kicker">Say hi</p>
+          <h2 class="h2" id="hello-title">Let's have a <span class="ransom" data-ransom>chat</span>.</h2>
+          <p class="hello__sub">Pick creator or brand, tell us a bit, and we'll get back to you.</p>
+          <svg class="doodle doodle--hello" viewBox="0 0 140 100" aria-hidden="true"><path d="M10 20 C 60 0, 120 20, 110 60 C 104 84, 70 90, 60 70 M60 70 L58 84 M60 70 L72 76"/></svg>
+        </header>
+
+        <div class="pad reveal">
+          <span class="tape tape--strip tape--pad" aria-hidden="true"></span>
+          <div class="pad__paper" data-tear="t" data-amp="6">
+          <form class="form" id="enquiry" novalidate>
+            <fieldset class="toggle" aria-describedby="err-type">
+              <legend>I'm a...</legend>
+              <label class="toggle__opt toggle__opt--creator">
+                <input type="radio" name="type" value="creator" checked>
+                <span>Creator</span>
+              </label>
+              <label class="toggle__opt toggle__opt--brand">
+                <input type="radio" name="type" value="brand">
+                <span>Brand</span>
+              </label>
+            </fieldset>
+            <p class="field-error" id="err-type" data-error="type"></p>
+
+            <div class="field">
+              <label for="f-name">Your name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" maxlength="120" required aria-describedby="err-name">
+              <p class="field-error" id="err-name" data-error="name"></p>
+            </div>
+
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="err-email">
+              <p class="field-error" id="err-email" data-error="email"></p>
+            </div>
+
+            <div class="field" data-for="creator">
+              <label for="f-handle">Your handle <span class="opt">(optional)</span></label>
+              <input id="f-handle" name="handle" type="text" maxlength="100" placeholder="@yourname" aria-describedby="err-handle">
+              <p class="field-error" id="err-handle" data-error="handle"></p>
+            </div>
+
+            <div class="field" data-for="brand" hidden>
+              <label for="f-company">Company <span class="opt">(optional)</span></label>
+              <input id="f-company" name="company" type="text" autocomplete="organization" maxlength="160" aria-describedby="err-company">
+              <p class="field-error" id="err-company" data-error="company"></p>
+            </div>
+
+            <div class="field">
+              <label for="f-message" id="f-message-label" data-creator="What are you working on?" data-brand="What are you looking for?">What are you working on?</label>
+              <textarea id="f-message" name="message" rows="4" maxlength="5000" required aria-describedby="err-message"></textarea>
+              <p class="field-error" id="err-message" data-error="message"></p>
+            </div>
+
+            <div class="hp" aria-hidden="true">
+              <label for="f-website">Website</label>
+              <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+
+            <button class="btn btn--forest btn--big" type="submit">
+              <span class="btn__text">Send it</span>
+              <svg class="plane" viewBox="0 0 40 30" aria-hidden="true"><path d="M2 14 L38 2 L26 28 L20 18 Z M38 2 L20 18"/></svg>
+            </button>
+            <p class="form__status" role="status" aria-live="polite"></p>
+          </form>
+
+          <div class="sent" hidden>
+            <p class="sent__stamp" aria-hidden="true">Got it!</p>
+            <span class="mark mark--big" data-mark="smile"></span>
+            <h3 class="sent__title" tabindex="-1">Thanks, <span data-sent-name>friend</span>!</h3>
+            <p class="sent__body">Your note's pinned to our board. We'll be in touch soon.</p>
+            <button class="btn btn--paper" type="button" data-again>Send another</button>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="foot">
+    <div class="rip rip--top" data-rip="top" aria-hidden="true"></div>
+    <div class="wrap foot__inner">
+      <p class="foot__word" aria-hidden="true">Yuzu</p>
+      <p class="sr-only">Yuzu Talent Agency</p>
+      <div class="foot__row">
+        <p class="foot__desc">Creator management <span aria-hidden="true">·</span> Brand management</p>
+        <p class="foot__copy">© 2026 Yuzu Talent Agency. Real people. Bigger moves.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/yuzu-api.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
