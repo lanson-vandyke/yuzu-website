@@ -711,6 +711,7 @@ main:focus { outline: none; }
 .tape--pad { top: -14px; left: 50%; width: 120px; transform: translateX(-50%) rotate(-3deg); }
 
 .form { display: grid; gap: .3rem; }
+.form[hidden] { display: none; }
 .toggle { border: 0; padding: 0; margin: 0 0 .4rem; display: flex; flex-wrap: wrap; gap: .9rem; }
 .toggle legend {
   font: 700 .74rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase;
