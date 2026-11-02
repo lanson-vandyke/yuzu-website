@@ -528,16 +528,74 @@ main:focus { outline: none; }
   .hello__head, .pad { grid-column: 1 / -1; }
 }
 
+/* phones: tighter rhythm, no decorative illustration, compact rows */
 @media (max-width: 599px) {
-  .brand__name { font-size: 1.4rem; }
-  .mark--nav { width: 40px; }
+  :root { --section-y: 56px; --nav-h: 60px; }
+  .brand__name { font-size: 1.35rem; }
+  .brand__sub { font-size: .6rem; }
+  .mark--nav { width: 38px; }
+  .nav__toggle { min-height: 40px; padding: 0 14px; }
+
+  /* hero: copy and CTAs only (the logo is already in the nav) */
+  .hero__inner { padding-block: 28px 44px; }
+  .hero__stage { display: none; }
+  .eyebrow { font-size: .6875rem; letter-spacing: .1em; gap: 8px; }
+  .hero__title { margin-top: 16px; font-size: clamp(2.9rem, 14vw, 3.6rem); }
   .hero__title .line--italic { padding-left: .3em; }
-  .hero__ctas .btn { flex: 1 1 auto; }
-  .hero__stage { max-width: 300px; }
-  .niche { padding: 18px 14px 24px; min-height: 0; }
-  .niche__title { padding-top: 28px; font-size: 1.35rem; }
-  .niche p { font-size: .9rem; }
-  .niche--invite .btn { min-height: 42px; padding: 0 16px; }
+  .hero__lede { margin-top: 18px; font-size: 1.02rem; }
+  .hero__handle { margin-top: 20px; }
+  .hero__handle-label { font-size: .7rem; gap: 10px; }
+  .hero__handle-label::before { width: 24px; }
+  .pills { margin-top: 10px; gap: 6px; }
+  .pills li { font-size: .75rem; padding: 4px 10px; }
+  .hero__ctas { margin-top: 24px; gap: 10px; }
+  .hero__ctas .btn { flex: 1 1 0; min-height: 50px; padding: 0 14px; font-size: .9375rem; }
+
+  /* section heads */
+  .section-head { margin-bottom: 24px; row-gap: 10px; }
+  .section--what .section-head { margin-bottom: 16px; }
+  .section-title { font-size: clamp(2rem, 9vw, 2.5rem); }
+
+  /* offers */
+  .offer { padding: 18px 0 28px; }
+  .offer__title { margin-top: 12px; font-size: 1.75rem; }
+  .offer__lede { margin-top: 8px; font-size: .975rem; }
+  .accs { margin: 18px 0 22px; }
+  .acc summary { padding: 13px 0; font-size: .975rem; }
+  .acc p { padding: 0 1.5rem 14px 0; font-size: .925rem; }
+
+  /* steps: number beside the title instead of above it */
+  .steps { row-gap: 0; }
+  .step {
+    display: grid; grid-template-columns: 36px 1fr; column-gap: 8px;
+    padding: 18px 0 20px;
+  }
+  .step__num { grid-row: span 2; padding-top: .35em; }
+  .step h3 { margin-top: 0; font-size: 1.5rem; }
+  .step p { margin-top: 4px; font-size: .95rem; }
+
+  /* niches */
+  .niche { padding: 14px 12px 18px; min-height: 0; }
+  .niche:nth-child(2n) { padding-left: 14px; }
+  .niche__title { padding-top: 6px; margin-top: 0; font-size: 1.3rem; }
+  .niche p { margin-top: 6px; font-size: .875rem; line-height: 1.45; }
+  .niche--invite p { margin-bottom: 14px; }
+  .niche--invite .btn { min-height: 40px; padding: 0 16px; font-size: .875rem; }
+
+  /* say hi */
+  .hello__inner { row-gap: 24px; }
+  .hello__head .section-title { margin-top: 10px; }
+  .hello__sub { margin-top: 12px; font-size: 1rem; }
+  .segmented span { padding: 10px; }
+  .field { margin-top: 10px; }
+  .field textarea { min-height: 96px; }
+  .form .btn--lg { margin-top: 20px; width: 100%; }
+
+  /* footer */
+  .foot { padding: 40px 0 24px; }
+  .foot__word { font-size: clamp(5rem, 30vw, 8rem); }
+  .foot__row { margin-top: 1.2rem; padding-top: 16px; }
+  .foot__desc { font-size: .7rem; letter-spacing: .1em; }
 }
 
 /* ================= REDUCED MOTION ================= */
