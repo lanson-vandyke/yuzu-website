@@ -1,7 +1,7 @@
 /*
- * Yuzu Talent Agency · Concept 10 "Good Trouble"
- * Kinetic yuzu mark (slice → smile → Y), ransom-note letters that reshuffle,
- * torn paper edges, scroll reveals and the creator/brand enquiry form.
+ * Yuzu Talent Agency · yuzutalent.com
+ * Kinetic yuzu mark (slice → smile → Y), growth rings, scroll reveals and
+ * the creator/brand enquiry form.
  */
 (function () {
   "use strict";
@@ -65,10 +65,6 @@
       pts.push([cx + Math.cos(a) * r * k, cy + Math.sin(a) * r * k]);
     }
     return smoothClosed(pts);
-  }
-  function debounce(fn, ms) {
-    let t;
-    return function () { clearTimeout(t); t = setTimeout(fn, ms); };
   }
 
   /* ---------------------------------------------------------------
@@ -185,115 +181,7 @@
   })();
 
   /* ---------------------------------------------------------------
-   * 2. Ransom-note letters (reshuffle on hover)
-   * ------------------------------------------------------------- */
-  const RANSOM = ["r-forest", "r-butter", "r-tomato", "r-cobalt", "r-paper", "r-outline", "r-soft", "r-hand", "r-dots"];
-  function stylesFor(node) {
-    return node.closest(".how") ? RANSOM.filter((c) => c !== "r-forest") : RANSOM;
-  }
-  function styleLetter(span, r, pool, avoid) {
-    let k;
-    do { k = pool[Math.floor(r() * pool.length)]; } while (k === avoid || k === span.dataset.style);
-    if (span.dataset.style) span.classList.remove(span.dataset.style);
-    span.dataset.style = k;
-    span.classList.add(k);
-    span.style.setProperty("--rr", ((r() - 0.5) * 14).toFixed(1) + "deg");
-    span.style.setProperty("--ry", ((r() - 0.5) * 0.14).toFixed(2) + "em");
-    return k;
-  }
-  function ransom(node) {
-    const text = node.textContent.trim();
-    const r = rng("goodtrouble" + text);
-    const pool = stylesFor(node);
-    node.textContent = "";
-    const sr = document.createElement("span");
-    sr.className = "sr-only";
-    sr.textContent = text;
-    const vis = document.createElement("span");
-    vis.setAttribute("aria-hidden", "true");
-    let prev = "";
-    text.split(/(\s+)/).forEach((word) => {
-      if (!word) return;
-      if (/^\s+$/.test(word)) { vis.appendChild(document.createTextNode(" ")); return; }
-      const w = document.createElement("span");
-      w.className = "rw";
-      for (const ch of word) {
-        const s = document.createElement("span");
-        s.className = "rl";
-        s.textContent = ch;
-        prev = styleLetter(s, r, pool, prev);
-        w.appendChild(s);
-      }
-      vis.appendChild(w);
-    });
-    node.append(sr, vis);
-
-    // Hover reshuffle is purely decorative (the letters are aria-hidden and the
-    // sr-only copy above carries the real words). Off for reduced motion.
-    const shuffleRng = rng(Date.now() ^ hash(text));
-    vis.addEventListener("pointerover", (e) => {
-      if (reduced) return;
-      const s = e.target.closest && e.target.closest(".rl");
-      if (!s || s.dataset.busy) return;
-      s.dataset.busy = "1";
-      styleLetter(s, shuffleRng, pool, "");
-      s.classList.remove("is-pop");
-      void s.offsetWidth;
-      s.classList.add("is-pop");
-      setTimeout(() => { delete s.dataset.busy; }, 260);
-    });
-  }
-
-  /* ---------------------------------------------------------------
-   * 3. Torn paper (clip-path polygons) and section rips
-   * ------------------------------------------------------------- */
-  function tearPolygon(w, h, sides, amp, r) {
-    const pts = [];
-    const has = (s) => sides === "all" || sides.indexOf(s) > -1;
-    const tooth = () => amp * (0.25 + 0.75 * r()) + (r() < 0.1 ? amp * 0.7 : 0);
-    const run = (len) => {
-      const out = [0];
-      let p = 0;
-      const step = Math.max(1.2, (11 / Math.max(len, 60)) * 100);
-      while (p < 100) { p += step * (0.45 + r() * 1.1); out.push(Math.min(100, p)); }
-      return out;
-    };
-    if (has("t")) run(w).forEach((x) => pts.push(`${x.toFixed(2)}% ${tooth().toFixed(1)}px`));
-    else pts.push("0% 0%", "100% 0%");
-    if (has("r")) run(h).forEach((y) => pts.push(`calc(100% - ${tooth().toFixed(1)}px) ${y.toFixed(2)}%`));
-    if (has("b")) run(w).reverse().forEach((x) => pts.push(`${x.toFixed(2)}% calc(100% - ${tooth().toFixed(1)}px)`));
-    else pts.push("100% 100%", "0% 100%");
-    if (has("l")) run(h).reverse().forEach((y) => pts.push(`${tooth().toFixed(1)}px ${y.toFixed(2)}%`));
-    return `polygon(${pts.join(",")})`;
-  }
-  function tearAll() {
-    // read every size first, then write, so this never interleaves layout reads with style writes
-    const nodes = $$("[data-tear]");
-    const sizes = nodes.map((node) => [node.offsetWidth || 300, node.offsetHeight || 300]);
-    nodes.forEach((node, i) => {
-      const sides = node.dataset.tear || "all";
-      const amp = parseFloat(node.dataset.amp || "6");
-      const r = rng("tear" + i + sides);
-      node.style.clipPath = tearPolygon(sizes[i][0], sizes[i][1], sides, amp, r);
-    });
-  }
-  function drawRips() {
-    $$("[data-rip]").forEach((host, i) => {
-      const top = host.dataset.rip === "top";
-      const r = rng("rip" + i);
-      let d = top ? "M0 22 L0 12" : "M0 0 L0 10";
-      for (let x = 0; x < 1000;) {
-        x = Math.min(1000, x + 6 + r() * 16);
-        const y = top ? 2 + r() * 13 + (r() < 0.08 ? 4 : 0) : 7 + r() * 13 - (r() < 0.08 ? 4 : 0);
-        d += ` L${f1(x)} ${f1(y)}`;
-      }
-      d += top ? " L1000 22 Z" : " L1000 0 Z";
-      host.innerHTML = `<svg viewBox="0 0 1000 22" preserveAspectRatio="none" focusable="false"><path fill="currentColor" d="${d}"/></svg>`;
-    });
-  }
-
-  /* ---------------------------------------------------------------
-   * 4. Growth rings: background of "What we do"
+   * 2. Growth rings: the hero illustration
    * ------------------------------------------------------------- */
   function drawRings() {
     const bg = $("[data-rings]");
@@ -301,7 +189,7 @@
       const r = rng("growth");
       const ph = [r() * 6, r() * 6, r() * 6];
       let out = "";
-      for (let i = 0; i < 16; i++) {
+      for (let i = 15; i >= 0; i--) {   // outermost first, so its fill sits underneath
         const rad = 26 + i * 17 + r() * 5;
         out += `<path d="${noisyRing(300, 300, rad, 0.04 + i * 0.002, [ph[0] + i * 0.12, ph[1] - i * 0.08, ph[2] + i * 0.05], 56)}"/>`;
       }
@@ -310,7 +198,7 @@
   }
 
   /* ---------------------------------------------------------------
-   * 5. Nav menu (small screens)
+   * 3. Nav menu (small screens)
    * ------------------------------------------------------------- */
   function initNav() {
     const btn = $(".nav__toggle"), menu = $("#nav-menu");
@@ -332,7 +220,7 @@
   }
 
   /* ---------------------------------------------------------------
-   * 6. Scroll reveals
+   * 4. Scroll reveals
    * ------------------------------------------------------------- */
   function initReveals() {
     const els = $$(".reveal");
@@ -349,7 +237,7 @@
   }
 
   /* ---------------------------------------------------------------
-   * 7. Enquiry form
+   * 5. Enquiry form
    * ------------------------------------------------------------- */
   function initForm() {
     const form = $("#enquiry");
@@ -494,18 +382,6 @@
   }
 
   /* ---------------------------------------------------------------
-   * 8. Pause the infinite CSS loops (step blobs) while their section
-   *    is off-screen
-   * ------------------------------------------------------------- */
-  function initOffscreenPause() {
-    if (!("IntersectionObserver" in window)) return;
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => e.target.classList.toggle("is-offscreen", !e.isIntersecting));
-    });
-    $$(".how").forEach((s) => io.observe(s));
-  }
-
-  /* ---------------------------------------------------------------
    * Boot (each step isolated, so one failure never leaves the
    * .reveal content hidden or the form unwired)
    * ------------------------------------------------------------- */
@@ -513,22 +389,10 @@
     try { fn(); } catch (err) { if (window.console) console.error(err); }
   }
   safe(() => Mark.init());
-  safe(() => $$("[data-ransom]").forEach(ransom));
-  safe(drawRips);
   safe(drawRings);
-  safe(tearAll);
   safe(initNav);
   safe(initReveals);
   safe(initForm);
-  safe(initOffscreenPause);
-
-  let lastWidth = window.innerWidth;
-  window.addEventListener("resize", debounce(() => {
-    if (window.innerWidth === lastWidth) return;
-    lastWidth = window.innerWidth;
-    tearAll();
-  }, 180));
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(tearAll);
 
   const onMotionChange = (e) => {
     reduced = e.matches;
