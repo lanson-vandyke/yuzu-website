@@ -1,8 +1,7 @@
 /*
  * Yuzu Talent Agency · Concept 10 "Good Trouble"
  * Kinetic yuzu mark (slice → smile → Y), ransom-note letters that reshuffle,
- * torn paper edges, a halftone yuzu, peelable stickers, a pin board you can
- * rearrange, scroll reveals and the creator/brand enquiry form.
+ * torn paper edges, scroll reveals and the creator/brand enquiry form.
  */
 (function () {
   "use strict";
@@ -294,83 +293,9 @@
   }
 
   /* ---------------------------------------------------------------
-   * 4. Halftone yuzu (two-colour riso print on butter paper)
-   * ------------------------------------------------------------- */
-  function drawHalftone(canvas) {
-    const w = canvas.clientWidth, h = canvas.clientHeight;
-    if (!w || !h) return;
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
-    canvas.width = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
-    const ctx = canvas.getContext("2d");
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, w, h);
-
-    const cx = w * 0.48, cy = h * 0.56, R = Math.min(w, h) * 0.37;
-    const cell = Math.max(5.5, w / 62);
-    const SEGS = 10, ROT = 0.3, TAU = Math.PI * 2;
-
-    function sample(x, y) {
-      const u = (x - cx) / R, v = (y - cy) / R;
-      const r = Math.hypot(u, v);
-      const shade = 1 + 0.28 * (u * 0.7 + v * 0.7);
-      // leaf, top right
-      const lx = u - 0.62, ly = v + 1.02, ca = Math.cos(-0.6), sa = Math.sin(-0.6);
-      const lu = (lx * ca - ly * sa) / 0.42, lv = (lx * sa + ly * ca) / 0.17;
-      const inLeaf = lu * lu + lv * lv < 1;
-      if (r > 1) {
-        if (inLeaf) return { ink: 0.62 + 0.25 * Math.abs(lv), juice: 0 };
-        const sx = u - 0.1, sy = v - 0.12;           // soft cast shadow
-        if (Math.hypot(sx, sy) < 1.08 && u + v > 0.2) return { ink: 0.14, juice: 0 };
-        return { ink: 0, juice: 0 };
-      }
-      if (r > 0.88) return { ink: 0.78 * shade, juice: 0.22 };            // peel
-      if (r > 0.8) return { ink: 0.06, juice: 0.04 };                     // pith
-      const a = Math.atan2(v, u) - ROT;
-      const frac = (((a / TAU) * SEGS) % 1 + 1) % 1;
-      const edge = Math.min(frac, 1 - frac) * (TAU / SEGS) * r;
-      if (edge < 0.035 || r < 0.1) return { ink: 0.05, juice: 0 };        // membranes
-      const hi = Math.max(0, -(u + v) * 0.35);                            // highlight top-left
-      return { ink: (0.1 + 0.16 * r) * shade, juice: clamp(0.4 + 0.4 * (r / 0.8) - hi, 0.05, 0.9) };
-    }
-
-    const layers = [
-      { color: "#F15A45", key: "juice", off: [1.6, 1.1], alpha: 0.95 },
-      { color: "#123D32", key: "ink", off: [0, 0], alpha: 0.92 }
-    ];
-    const grid = [];
-    const rowH = cell * 0.866;
-    for (let row = 0, y = cell / 2; y < h + cell; row++, y += rowH) {
-      for (let x = (row % 2 ? cell / 2 : 0); x < w + cell; x += cell) grid.push([x, y, sample(x, y)]);
-    }
-    layers.forEach((L) => {
-      ctx.globalAlpha = L.alpha;
-      ctx.fillStyle = L.color;
-      ctx.beginPath();
-      grid.forEach(([x, y, s]) => {
-        const val = s[L.key];
-        if (val < 0.04) return;
-        const rad = cell * 0.52 * Math.sqrt(clamp(val, 0, 1));
-        ctx.moveTo(x + L.off[0] + rad, y + L.off[1]);
-        ctx.arc(x + L.off[0], y + L.off[1], rad, 0, TAU);
-      });
-      ctx.fill();
-    });
-    ctx.globalAlpha = 1;
-  }
-
-  /* ---------------------------------------------------------------
-   * 5. Growth rings: hero stamp + background of "What we do"
+   * 4. Growth rings: background of "What we do"
    * ------------------------------------------------------------- */
   function drawRings() {
-    const stamp = $("[data-stamp] .stamp__rings");
-    if (stamp) {
-      const r = rng("stamp");
-      const rings = [96, 92, 58, 52, 22];
-      stamp.innerHTML = rings.map((rad) =>
-        `<path d="${noisyRing(100, 100, rad, 0.025, [r() * 6, r() * 6, r() * 6], 40)}"/>`).join("") +
-        `<path d="M100 100 m0 -10 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3 Z"/>`;
-    }
     const bg = $("[data-rings]");
     if (bg) {
       const r = rng("growth");
@@ -385,119 +310,7 @@
   }
 
   /* ---------------------------------------------------------------
-   * 6. Peelable stickers
-   * ------------------------------------------------------------- */
-  // Each sticker is a toggle button: its name stays the same ("Peel the ...
-  // sticker") and aria-pressed carries the state. What's underneath is spoken
-  // through one polite live region.
-  function initPeel() {
-    const stickers = $$("[data-peel]");
-    const found = $(".collage__found");
-    const say = $("[data-peel-status]");
-    const ALL = "you peeled them all. now say hi?";
-    stickers.forEach((btn) => {
-      const face = $(".peel__face", btn);
-      face.addEventListener("animationend", (e) => { if (e.animationName === "slap") btn.classList.remove("is-stuck"); });
-      btn.addEventListener("click", () => {
-        const peeled = btn.getAttribute("aria-pressed") !== "true";
-        btn.classList.toggle("is-peeled", peeled);
-        btn.classList.toggle("is-stuck", !peeled && !reduced);
-        btn.setAttribute("aria-pressed", String(peeled));
-        const all = stickers.every((s) => s.getAttribute("aria-pressed") === "true");
-        if (found) found.textContent = all ? ALL : "";
-        if (say) say.textContent = peeled ? `Underneath it says: ${btn.dataset.peel}${all ? " " + ALL : ""}` : "Stuck back on.";
-      });
-    });
-  }
-
-  /* ---------------------------------------------------------------
-   * 7. Pin board: drag the cards around (mouse anywhere, touch by
-   *    the pin, keyboard with arrow keys)
-   * ------------------------------------------------------------- */
-  function initBoard() {
-    const board = $("[data-board]");
-    if (!board) return;
-    const tiles = $$(".tile", board);
-    let z = 10;
-
-    const get = (t) => [parseFloat(t.style.getPropertyValue("--dx")) || 0, parseFloat(t.style.getPropertyValue("--dy")) || 0];
-    const set = (t, dx, dy) => { t.style.setProperty("--dx", f1(dx) + "px"); t.style.setProperty("--dy", f1(dy) + "px"); };
-    // Bounds come from layout offsets (the board is the offsetParent), which
-    // ignore transforms, so they stay right while a card is mid-transition.
-    function limits(t) {
-      const pad = window.innerWidth < 600 ? 8 : 28;   // small screens: keep cards inside the gutter
-      const x = t.offsetLeft, y = t.offsetTop;
-      return {
-        minX: -pad - x, maxX: board.clientWidth + pad - (x + t.offsetWidth),
-        minY: -pad - y, maxY: board.clientHeight + pad - (y + t.offsetHeight)
-      };
-    }
-    const lift = (t) => { t.style.zIndex = String(++z); };
-
-    tiles.forEach((tile) => {
-      let drag = null, moved = false;
-
-      tile.addEventListener("pointerdown", (e) => {
-        if (e.button !== 0) return;
-        if (e.pointerType === "touch" && !e.target.closest(".tile__pin")) return;
-        if (e.target.closest("a, button")) return;
-        const [dx, dy] = get(tile);
-        drag = { x: e.clientX, y: e.clientY, dx, dy, lim: limits(tile), id: e.pointerId };
-        moved = false;
-        lift(tile);
-      });
-      tile.addEventListener("pointermove", (e) => {
-        if (!drag || e.pointerId !== drag.id) return;
-        if (e.pointerType !== "touch" && e.buttons === 0) { end(); return; }
-        const mx = e.clientX - drag.x, my = e.clientY - drag.y;
-        if (!moved && Math.hypot(mx, my) < 4) return;
-        if (!moved) {
-          moved = true;
-          tile.classList.add("is-dragging");
-          try { tile.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
-        }
-        e.preventDefault();
-        set(tile, clamp(drag.dx + mx, drag.lim.minX, drag.lim.maxX), clamp(drag.dy + my, drag.lim.minY, drag.lim.maxY));
-      });
-      const end = () => {
-        if (!drag) return;
-        drag = null;
-        tile.classList.remove("is-dragging");
-        // let the click that follows this pointerup see `moved`, then clear it so
-        // a later keyboard activation of the "say hi" link is never swallowed
-        if (moved) setTimeout(() => { moved = false; }, 0);
-      };
-      tile.addEventListener("pointerup", end);
-      tile.addEventListener("pointercancel", end);
-      tile.addEventListener("lostpointercapture", end);
-      // a drag that ends on the "say hi" link should not follow it
-      tile.addEventListener("click", (e) => {
-        if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
-      }, true);
-      tile.addEventListener("dragstart", (e) => e.preventDefault());
-
-      tile.addEventListener("keydown", (e) => {
-        if (e.target !== tile) return;
-        const step = e.shiftKey ? 40 : 14;
-        const dir = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
-        if (!dir) return;
-        e.preventDefault();
-        const lim = limits(tile);
-        const [dx, dy] = get(tile);
-        lift(tile);
-        set(tile, clamp(dx + dir[0] * step, lim.minX, lim.maxX), clamp(dy + dir[1] * step, lim.minY, lim.maxY));
-      });
-    });
-
-    // after a layout change, reset so no card ends up off the board
-    let lastW = window.innerWidth;
-    window.addEventListener("resize", debounce(() => {
-      if (window.innerWidth !== lastW) { lastW = window.innerWidth; tiles.forEach((t) => set(t, 0, 0)); }
-    }, 200));
-  }
-
-  /* ---------------------------------------------------------------
-   * 8. Nav menu (small screens)
+   * 5. Nav menu (small screens)
    * ------------------------------------------------------------- */
   function initNav() {
     const btn = $(".nav__toggle"), menu = $("#nav-menu");
@@ -519,7 +332,7 @@
   }
 
   /* ---------------------------------------------------------------
-   * 9. Scroll reveals
+   * 6. Scroll reveals
    * ------------------------------------------------------------- */
   function initReveals() {
     const els = $$(".reveal");
@@ -536,7 +349,7 @@
   }
 
   /* ---------------------------------------------------------------
-   * 10. Enquiry form
+   * 7. Enquiry form
    * ------------------------------------------------------------- */
   function initForm() {
     const form = $("#enquiry");
@@ -681,15 +494,15 @@
   }
 
   /* ---------------------------------------------------------------
-   * 11. Pause the infinite CSS loops (stamp spin, star twinkle, step
-   *     blobs) while their section is off-screen
+   * 8. Pause the infinite CSS loops (step blobs) while their section
+   *    is off-screen
    * ------------------------------------------------------------- */
   function initOffscreenPause() {
     if (!("IntersectionObserver" in window)) return;
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => e.target.classList.toggle("is-offscreen", !e.isIntersecting));
     });
-    $$(".hero, .how").forEach((s) => io.observe(s));
+    $$(".how").forEach((s) => io.observe(s));
   }
 
   /* ---------------------------------------------------------------
@@ -704,22 +517,10 @@
   safe(drawRips);
   safe(drawRings);
   safe(tearAll);
-  safe(initPeel);
-  safe(initBoard);
   safe(initNav);
   safe(initReveals);
   safe(initForm);
   safe(initOffscreenPause);
-
-  const canvases = $$("[data-halftone]");
-  const paint = () => canvases.forEach((c) => safe(() => drawHalftone(c)));
-  paint();
-  if ("ResizeObserver" in window) {
-    const ro = new ResizeObserver(debounce(paint, 120));
-    canvases.forEach((c) => ro.observe(c));
-  } else {
-    window.addEventListener("resize", debounce(paint, 150));
-  }
 
   let lastWidth = window.innerWidth;
   window.addEventListener("resize", debounce(() => {
