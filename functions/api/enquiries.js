@@ -14,6 +14,9 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const TYPES = ["brand", "creator", "press"];
 const MAX = { name: 120, email: 254, company: 160, handle: 100, budget: 60, message: 5000, site: 60 };
 const MAX_BODY = 20 * 1024;
+// Same routing as apps-script/Code.gs and public/js/yuzu-api.js.
+const INBOX = { creator: "creators@yuzutalent.com", brand: "brands@yuzutalent.com" };
+const inboxFor = (type) => INBOX[type] || "hi@yuzutalent.com";
 
 function json(status, body) {
   return new Response(JSON.stringify(body), {
@@ -60,7 +63,7 @@ export async function onRequestPost({ request, env }) {
 
   if (!env.ENQUIRY_WEBHOOK_URL || !env.ENQUIRY_WEBHOOK_SECRET) {
     console.error("enquiries: webhook env vars are not set");
-    return json(503, { ok: false, errors: { form: "Our form is having a nap. Please email lanson@yuzutalent.com." } });
+    return json(503, { ok: false, errors: { form: `Our form is having a nap. Please email ${inboxFor(clean.type)}.` } });
   }
 
   const record = {
@@ -86,7 +89,7 @@ export async function onRequestPost({ request, env }) {
   } catch (err) {
     console.error("enquiries: webhook failed", err && err.message);
   }
-  return json(502, { ok: false, errors: { form: "We couldn't send that just now. Please email lanson@yuzutalent.com and we'll get back to you." } });
+  return json(502, { ok: false, errors: { form: `We couldn't send that just now. Please email ${inboxFor(clean.type)} and we'll get back to you.` } });
 }
 
 export function onRequest() {

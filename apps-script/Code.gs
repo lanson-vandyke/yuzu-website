@@ -5,14 +5,20 @@
  * "Yuzu Website Enquiries" Google Sheet (SHEET_ID below).
  * The Cloudflare Pages Function (functions/api/enquiries.js) POSTs each
  * validated enquiry here. This script appends a row to the Sheet and emails
- * NOTIFY_TO, with Reply-To set to the person who wrote in.
+ * the Group for that enquiry type (creators@, brands@, otherwise hi@), with
+ * Reply-To set to the person who wrote in.
  *
  * Deploy: Deploy > New deployment > Web app, Execute as: Me, Who has access: Anyone.
  * SECRET is stored in Project Settings > Script properties as ENQUIRY_SECRET,
  * and must match ENQUIRY_WEBHOOK_SECRET in Cloudflare.
  */
 const SHEET_ID = "1XU2XDgOP14LN7KElOIw8ouOQUXkDrNEly5rBLis_3_M"; // "Yuzu Website Enquiries"
-const NOTIFY_TO = "hello@yuzutalent.com"; // Group: everyone in it gets each enquiry
+// Each enquiry is emailed to the Group for its type; everyone in that Group gets it.
+const NOTIFY_TO = {
+  creator: "creators@yuzutalent.com",
+  brand: "brands@yuzutalent.com"
+};
+const NOTIFY_DEFAULT = "hi@yuzutalent.com"; // press and anything else
 const SHEET_NAME = "Enquiries";
 const HEADERS = ["Received", "Type", "Name", "Email", "Handle", "Company", "Budget", "Message", "Status", "Owner", "Country", "Site", "ID"];
 
@@ -48,7 +54,7 @@ function doPost(e) {
     ].filter(function (l, i, a) { return l !== "" || a[i - 1] !== ""; });
 
     MailApp.sendEmail({
-      to: NOTIFY_TO,
+      to: NOTIFY_TO[data.type] || NOTIFY_DEFAULT,
       replyTo: data.email,
       name: "Yuzu website",
       subject: "[Enquiry · " + label + "] " + who,

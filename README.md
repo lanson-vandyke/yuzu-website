@@ -6,7 +6,8 @@ The live Yuzu Talent Agency website: Concept 10, "Good Trouble", from `yuzu-conc
 
 - **Hosting:** Cloudflare Pages (free plan), connected to this GitHub repo. Every push to `main` deploys.
 - **Site:** static files in `public/`. No build step.
-- **Enquiry form:** `public/js/yuzu-api.js` POSTs to `/api/enquiries`, a Pages Function in `functions/api/enquiries.js`. It validates the enquiry and forwards it to a Google Apps Script web app (`apps-script/Code.gs`). The script adds a row to the "Website Enquiries" Sheet in lanson@yuzutalent.com's Drive and emails hello@yuzutalent.com (a Google Group).
+- **Enquiry form:** `public/js/yuzu-api.js` POSTs to `/api/enquiries`, a Pages Function in `functions/api/enquiries.js`. It validates the enquiry and forwards it to a Google Apps Script web app (`apps-script/Code.gs`). The script adds a row to the "Website Enquiries" Sheet in lanson@yuzutalent.com's Drive and emails the Google Group for that enquiry type: creators@yuzutalent.com for creators, brands@yuzutalent.com for brands, hi@yuzutalent.com for anything else.
+- **Email links:** the "Say hi" section lists creators@, brands@ and hi@ as mailto links, and the footer links hi@. The form's error messages point to the same three addresses.
 
 ## Cloudflare Pages settings
 
@@ -32,4 +33,6 @@ Put the two variables in a `.dev.vars` file (git-ignored) to test the form local
 
 ## Changing who gets enquiry emails
 
-Edit `NOTIFY_TO` in the Apps Script editor (Extensions › Apps Script from the Sheet), then **Deploy › Manage deployments › Edit › New version**. Also update `apps-script/Code.gs` here to match.
+To change who is in an inbox, edit the members of the creators@, brands@ or hi@ Group in the Google Admin console; no code change is needed.
+
+To change which address an enquiry type goes to, edit `NOTIFY_TO` / `NOTIFY_DEFAULT` in the Apps Script editor (script.google.com, signed in as lanson@), then **Deploy › Manage deployments › Edit › New version**. Also update `apps-script/Code.gs`, `functions/api/enquiries.js` and `public/js/yuzu-api.js` here to match, plus the mailto links in `public/index.html`.

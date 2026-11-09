@@ -7,7 +7,10 @@
  */
 (function (root) {
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  const FALLBACK = "We couldn't send that just now. Please email lanson@yuzutalent.com and we'll get back to you.";
+  // Same routing as functions/api/enquiries.js and apps-script/Code.gs.
+  const INBOX = { creator: "creators@yuzutalent.com", brand: "brands@yuzutalent.com" };
+  const inboxFor = (type) => INBOX[type] || "hi@yuzutalent.com";
+  const fallback = (type) => "We couldn't send that just now. Please email " + inboxFor(type) + " and we'll get back to you.";
 
   function validateEnquiry(p) {
     const errors = {};
@@ -32,7 +35,7 @@
         const body = await res.json().catch(() => null);
         if (body && typeof body.ok === "boolean") return body;
       } catch (_) { /* network error: fall through */ }
-      return { ok: false, errors: { form: FALLBACK } };
+      return { ok: false, errors: { form: fallback(payload.type) } };
     }
   };
 })(typeof self !== "undefined" ? self : this);
