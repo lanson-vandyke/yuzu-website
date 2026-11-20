@@ -1,6 +1,6 @@
 /*
  * Yuzu Talent Agency · yuzutalent.com
- * Kinetic yuzu mark (slice → smile → Y), growth rings, scroll reveals and
+ * Animated yuzu mark (slice → smile → Y), hero rings, the phone menu and
  * the creator/brand enquiry form.
  */
 (function () {
@@ -55,7 +55,7 @@
     for (let i = 0; i < n; i++) d += "Q" + P(pts[i]) + " " + P(mid(pts[i], pts[(i + 1) % n]));
     return d + "Z";
   }
-  /* Goodform-style organic ring */
+  /* wobbly ring */
   function noisyRing(cx, cy, r, amp, ph, steps) {
     const pts = [];
     steps = steps || 48;
@@ -220,24 +220,7 @@
   }
 
   /* ---------------------------------------------------------------
-   * 4. Scroll reveals
-   * ------------------------------------------------------------- */
-  function initReveals() {
-    const els = $$(".reveal");
-    if (reduced || !("IntersectionObserver" in window)) { els.forEach((el) => el.classList.add("is-in")); return; }
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        const sibs = $$(".reveal", e.target.parentNode);
-        setTimeout(() => e.target.classList.add("is-in"), Math.max(0, sibs.indexOf(e.target)) * 110);
-        io.unobserve(e.target);
-      });
-    }, { rootMargin: "0px 0px -8% 0px" });
-    els.forEach((el) => io.observe(el));
-  }
-
-  /* ---------------------------------------------------------------
-   * 5. Enquiry form
+   * 4. Enquiry form
    * ------------------------------------------------------------- */
   function initForm() {
     const form = $("#enquiry");
@@ -363,8 +346,6 @@
       form.hidden = true;
       setBusy(false);
       sent.hidden = false;
-      const stamp = $(".sent__stamp", sent);
-      if (stamp) { stamp.style.animation = "none"; void stamp.offsetWidth; stamp.style.animation = ""; }
       $(".sent__title", sent).focus();
     });
 
@@ -382,8 +363,7 @@
   }
 
   /* ---------------------------------------------------------------
-   * Boot (each step isolated, so one failure never leaves the
-   * .reveal content hidden or the form unwired)
+   * Boot (each step isolated, so one failure doesn't stop the rest)
    * ------------------------------------------------------------- */
   function safe(fn) {
     try { fn(); } catch (err) { if (window.console) console.error(err); }
@@ -391,7 +371,6 @@
   safe(() => Mark.init());
   safe(drawRings);
   safe(initNav);
-  safe(initReveals);
   safe(initForm);
 
   const onMotionChange = (e) => {
